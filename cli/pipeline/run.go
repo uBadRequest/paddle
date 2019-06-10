@@ -36,6 +36,7 @@ type runCmdFlagsStruct struct {
 	ImageTag           string
 	StepBranch         string
 	StepVersion        string
+	StepImageURL       string
 	OverrideInputs     bool
 	TailLogs           bool
 	Secrets            []string
@@ -76,6 +77,7 @@ func init() {
 	runCmd.Flags().StringVarP(&runCmdFlags.ImageTag, "tag", "t", "", "Image tag (overrides the one defined in the pipeline)")
 	runCmd.Flags().StringVarP(&runCmdFlags.StepBranch, "step-branch", "B", "", "Step branch (overrides the one defined in the pipeline)")
 	runCmd.Flags().StringVarP(&runCmdFlags.StepVersion, "step-version", "V", "", "Step version (overrides the one defined in the pipeline)")
+	runCmd.Flags().StringVarP(&runCmdFlags.StepImageURL, "step-image-url", "i", "", "Image URL(use a different docker image)")
 	runCmd.Flags().BoolVarP(&runCmdFlags.TailLogs, "logs", "l", true, "Tail logs")
 	runCmd.Flags().BoolVarP(&runCmdFlags.OverrideInputs, "override-inputs", "I", false, "Override input version/branch (only makes sense to use with -B or -V)")
 	runCmd.Flags().StringSliceVarP(&runCmdFlags.Secrets, "secret", "S", []string{}, "Secret to pull into the environment (in the form ENV_VAR:secret_store:key_name)")
@@ -116,6 +118,9 @@ func runPipeline(path string, flags *runCmdFlagsStruct) {
 		}
 		if flags.StepVersion != "" {
 			step.OverrideVersion(flags.StepVersion, flags.OverrideInputs)
+		}
+		if flags.StepImageURL != "" {
+			step.OverrideImageURL(flags.StepImageURL)
 		}
 		err = runPipelineStep(pipeline, &step, flags)
 		if err != nil {

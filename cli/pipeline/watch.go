@@ -3,13 +3,14 @@ package pipeline
 import (
 	"bufio"
 	"context"
+	"log"
+	"time"
+
 	"k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/fields"
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/kubernetes"
-	"log"
-	"time"
 )
 
 type WatchEventType string
@@ -79,6 +80,7 @@ func Watch(ctx context.Context, c kubernetes.Interface, watchPod *v1.Pod) (<-cha
 						containers[container.Name] = false
 					}
 					if container.State.Terminated.ExitCode != 0 {
+						log.Println("w000t")
 						out <- WatchEvent{Failed, pod, container.Name, container.State.Terminated.Message}
 					}
 				}

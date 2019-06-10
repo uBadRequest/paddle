@@ -88,3 +88,8 @@ func (p *PipelineDefinitionStep) OverrideBranch(branch string, overrideInputs bo
 		}
 	}
 }
+func (p *PipelineDefinitionStep) OverrideImageURL(imageURL string) {
+	if imageURL != "" {
+		p.Image = imageURL
+	}
+}
