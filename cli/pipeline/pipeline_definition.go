@@ -8,21 +8,24 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+type PipelineDefinitionStepInput struct {
+	Step    string   `yaml:"step" json:"step"`
+	Version string   `yaml:"version" json:"version"`
+	Branch  string   `yaml:"branch" json:"branch"`
+	Image   string   `yaml:"image" json:"image"`
+	Path    string   `yaml:"path" json:"path"`
+	Bucket  string   `yaml:"bucket" json:"bucket"`
+	Keys    []string `yaml:"keys" json:"keys"`
+	Subdir  string   `yaml:"subdir" json:"subdir"`
+}
+
 type PipelineDefinitionStep struct {
-	Step    string `yaml:"step" json:"step"`
-	Version string `yaml:"version" json:"version"`
-	Branch  string `yaml:"branch" json:"branch"`
-	Image   string `yaml:"image" json:"image"`
-	Inputs  []struct {
-		Step    string `yaml:"step" json:"step"`
-		Version string `yaml:"version" json:"version"`
-		Branch  string `yaml:"branch" json:"branch"`
-		Path    string `yaml:"path" json:"path"`
-		Bucket  string `yaml:"bucket" json:"bucket"`
-		Keys    []string `yaml:"keys" json:"keys"`
-		Subdir  string `yaml:"subdir" json:"subdir"`
-	} `yaml:"inputs" json:"inputs"`
-	Commands  []string `yaml:"commands" json:"commands"`
+	Step      string                        `yaml:"step" json:"step"`
+	Version   string                        `yaml:"version" json:"version"`
+	Branch    string                        `yaml:"branch" json:"branch"`
+	Image     string                        `yaml:"image" json:"image"`
+	Inputs    []PipelineDefinitionStepInput `yaml:"inputs" json:"inputs"`
+	Commands  []string                      `yaml:"commands" json:"commands"`
 	Resources struct {
 		CPU     int    `yaml:"cpu" json:"cpu"`
 		Memory  string `yaml:"memory" json:"memory"`
