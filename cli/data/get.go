@@ -110,7 +110,7 @@ func copyPathToDestination(source S3Path, destination string, keys []string, sub
 		destination = parseDestination(destination, subdir)
 	}
 
-	fmt.Println("Copying " + source.path + " to " + destination)
+	fmt.Println("data fetching | Copying " + source.path + " to " + destination)
 	copy(session, source, destination, keys)
 }
 
@@ -275,6 +275,6 @@ func store(obj *s3.GetObjectOutput, destination string) error {
 		return errors.Wrapf(err, "copying file %s", destination)
 	}
 
-	fmt.Printf("%s -> %d bytes\n", destination, bytes)
+	fmt.Printf("data fetching | %s -> %d bytes\n", destination, bytes)
 	return nil
 }
