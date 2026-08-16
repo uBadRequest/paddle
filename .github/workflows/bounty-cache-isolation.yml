@@ -1,0 +1,30 @@
+name: Bounty cache isolation test
+on:
+  push:
+    branches:
+      - bounty-cache-isolation-20260816
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Try repository B cache key from repository A
+        id: restore
+        uses: actions/cache/restore@v4
+        with:
+          path: bounty-cache
+          key: bounty-isolation-20260816-7cbecfd9
+      - name: Verify cross-repository isolation
+        shell: bash
+        run: |
+          if [ "${{ steps.restore.outputs.cache-hit }}" = "true" ] || [ -f bounty-cache/marker.txt ]; then
+            echo 'RESULT=CROSS_REPOSITORY_CACHE_HIT'
+            if [ -f bounty-cache/marker.txt ]; then
+              sha256sum bounty-cache/marker.txt
+            fi
+            exit 42
+          fi
+          echo 'RESULT=REPOSITORY_CACHE_ISOLATED'
